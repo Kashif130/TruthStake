@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthStake — AI Fact-Check Bounty Market on GenLayer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__row">
+      <a href="/" class="brand"><span class="brand__mark">TS</span><span class="brand__word">TruthStake</span></a>
+      <nav class="nav">
+        <a href="/" class="nav__link is-active">Case Feed</a>
+        <a href="/submit" class="nav__link">File a Claim</a>
+        <a href="/faq" class="nav__link">How It Works</a>
+      </nav>
+      <span id="addr" class="visually-hidden"></span>
+      <button id="connectBtn" class="btn btn--wallet">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <section class="hero">
+        <p class="hero__eyebrow">Verified by AI consensus, not by mob vote</p>
+        <h1 class="hero__title">Stake on the <em>truth</em>. Let AI validators research the evidence.</h1>
+        <p class="hero__sub">Submit a claim, back the ones you believe, and let GenLayer's Intelligent Contracts browse the web and reach independent consensus on what's true, false, or misleading. Wrong verdicts can be challenged on-chain.</p>
+        <div class="hero__stats">
+          <div><span id="statOpen" class="stat__value">—</span><span class="stat__label">Open Cases</span></div>
+          <div><span id="statPool" class="stat__value">—</span><span class="stat__label">Total GEN Staked</span></div>
+        </div>
+      </section>
+
+      <section id="sectionToolbar" class="toolbar lockable is-locked" aria-label="Filters">
+        <div class="tabs" role="tablist">
+          <button class="tab is-active" data-status="all">All</button>
+          <button class="tab" data-status="pending">Pending</button>
+          <button class="tab" data-status="true">Verified True</button>
+          <button class="tab" data-status="false">Verified False</button>
+          <button class="tab" data-status="misleading">Misleading</button>
+        </div>
+      </section>
+
+      <section id="sectionCards" class="cards lockable is-locked"></section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__row">
+      <p>© 2026 TruthStake. Built on GenLayer.</p>
+      <p>A fact-verification market — not Questera, not a quest platform.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

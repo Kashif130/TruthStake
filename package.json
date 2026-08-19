@@ -1,0 +1,21 @@
+{
+  "name": "truthstake",
+  "version": "1.0.0",
+  "main": "src/start.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/start.js",
+    "dev": "NODE_ENV=development node src/start.js"
+  },
+  "keywords": ["genlayer", "fact-check", "intelligent-contracts"],
+  "author": "",
+  "license": "ISC",
+  "description": "TruthStake — an AI fact-checking bounty market built on GenLayer Intelligent Contracts.",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "genlayer-js": "^0.28.0",
+    "morgan": "^1.10.1"
+  }
+}

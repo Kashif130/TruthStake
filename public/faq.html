@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthStake — How It Works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__row">
+      <a href="/" class="brand"><span class="brand__mark">TS</span><span class="brand__word">TruthStake</span></a>
+      <nav class="nav">
+        <a href="/" class="nav__link">Case Feed</a>
+        <a href="/submit" class="nav__link">File a Claim</a>
+        <a href="/faq" class="nav__link is-active">How It Works</a>
+      </nav>
+      <span id="addr" class="visually-hidden"></span>
+      <button id="connectBtn" class="btn btn--wallet">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="padding-top: 40px; max-width: 760px;">
+      <p class="hero__eyebrow">Case Manual</p>
+      <h1 class="hero__title" style="font-size: 34px;">How TruthStake works</h1>
+
+      <div class="dossier">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;">1. File a claim</h2>
+        <p class="dossier__reasoning" style="margin-top:0;border:none;padding-top:0;">You write a single, checkable factual claim and stake GEN behind it. A dedicated Claim contract is deployed just for that case. You then fund it directly from your wallet — the stake lives in the contract, not with TruthStake.</p>
+
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;">2. Backers pile on</h2>
+        <p class="dossier__reasoning" style="margin-top:0;border:none;padding-top:0;">Anyone who believes the claim is true can back it with their own GEN before it's resolved, growing the pool that shares in the reward if the verdict comes back TRUE.</p>
+
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;">3. AI validators verify</h2>
+        <p class="dossier__reasoning" style="margin-top:0;border:none;padding-top:0;">Anyone can trigger verification. A GenLayer validator "leader" independently researches the claim — reading any submitted sources plus browsing the web itself — and returns TRUE, FALSE, MISLEADING, or UNVERIFIABLE with reasoning. Other validators re-run the same research; the network only accepts the verdict once they reach consensus.</p>
+
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;">4. Challenge a bad verdict</h2>
+        <p class="dossier__reasoning" style="margin-top:0;border:none;padding-top:0;">Disagree with the result? Stake at least as much as the original claim to force a fresh, independent re-verification. If validators reverse the verdict, you win your stake back plus a slash bonus taken from the original stake. If they uphold it, your challenge stake joins the reward pool. Each claim allows a limited number of challenges to prevent endless re-litigation.</p>
+
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;">5. Collect the payout</h2>
+        <p class="dossier__reasoning" style="margin-top:0;border:none;padding-top:0;">Once resolved and any challenge window is closed, the submitter and every backer on the winning (TRUE) side can claim their original stake back plus a proportional share of the reward pool. If the claim was FALSE or MISLEADING, stakes are not returned — they fund the misinformation pool that rewarded challengers.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__row">
+      <p>© 2026 TruthStake. Built on GenLayer.</p>
+      <p>A fact-verification market — not a quest platform.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

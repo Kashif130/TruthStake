@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthStake — Case File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__row">
+      <a href="/" class="brand"><span class="brand__mark">TS</span><span class="brand__word">TruthStake</span></a>
+      <nav class="nav">
+        <a href="/" class="nav__link">Case Feed</a>
+        <a href="/submit" class="nav__link">File a Claim</a>
+        <a href="/faq" class="nav__link">How It Works</a>
+      </nav>
+      <span id="addr" class="visually-hidden"></span>
+      <button id="connectBtn" class="btn btn--wallet">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="padding-top: 32px;">
+      <p class="hero__eyebrow">Case File <span id="caseId">—</span></p>
+
+      <section id="sectionDossier" class="lockable is-locked">
+        <div class="dossier">
+          <div class="dossier__head">
+            <h1 id="claimText" class="dossier__claim">Loading claim…</h1>
+            <span id="verdictStamp" class="stamp stamp--pending stamp--lg">Pending</span>
+          </div>
+
+          <div class="dossier__grid">
+            <div class="field"><div class="field__label">Submitter Stake</div><div id="fStake" class="field__value">—</div></div>
+            <div class="field"><div class="field__label">Backed Pool</div><div id="fBacked" class="field__value">—</div></div>
+            <div class="field"><div class="field__label">Reward / Slash Pool</div><div id="fReward" class="field__value">—</div></div>
+            <div class="field"><div class="field__label">Confidence</div><div id="fConfidence" class="field__value">—</div></div>
+            <div class="field"><div class="field__label">Challenges Used</div><div id="fChallenges" class="field__value">—</div></div>
+          </div>
+
+          <div id="reasoningBox" class="dossier__reasoning" style="display:none;">
+            <strong>Validator reasoning:</strong> <span id="fReasoning"></span>
+          </div>
+
+          <div class="actions">
+            <button id="btnFund" class="btn btn--wallet">Fund Stake (Submitter Only)</button>
+            <button id="btnBack" class="btn btn--ghost">Back This Claim</button>
+            <button id="btnVerify" class="btn btn--ghost">Run AI Verification</button>
+            <button id="btnChallenge" class="btn btn--ghost">Challenge Verdict</button>
+            <button id="btnPayout" class="btn btn--ghost">Claim Payout</button>
+          </div>
+          <p id="statusMsg" class="form-hint" style="margin-top:14px;"></p>
+        </div>
+      </section>
+
+      <section class="dossier">
+        <div class="field__label" style="margin-bottom:10px;">Contract Address</div>
+        <div class="log"><span id="contractAddr" class="log__addr">—</span></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__row">
+      <p>© 2026 TruthStake. Built on GenLayer.</p>
+      <p>Verdicts are produced by leader/validator LLM consensus with live web access.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

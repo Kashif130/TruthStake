@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthStake — File a Claim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__row">
+      <a href="/" class="brand"><span class="brand__mark">TS</span><span class="brand__word">TruthStake</span></a>
+      <nav class="nav">
+        <a href="/" class="nav__link">Case Feed</a>
+        <a href="/submit" class="nav__link is-active">File a Claim</a>
+        <a href="/faq" class="nav__link">How It Works</a>
+      </nav>
+      <span id="addr" class="visually-hidden"></span>
+      <button id="connectBtn" class="btn btn--wallet">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <section class="hero" style="padding-bottom: 8px;">
+        <p class="hero__eyebrow">Case Intake</p>
+        <h1 class="hero__title">File a claim for the record</h1>
+        <p class="hero__sub">Stake GEN behind a claim you believe is true. AI validators will independently research it — using the sources you provide plus their own web access — and reach consensus on a verdict.</p>
+      </section>
+
+      <section id="sectionForm" class="lockable is-locked">
+        <div class="form-page card">
+          <div class="form-note">
+            Your stake is only returned (plus a share of the reward pool) if the claim is verified <strong>TRUE</strong>. If it's found FALSE or MISLEADING, your stake moves into the misinformation pool that rewards successful challengers and fact-checkers.
+          </div>
+          <form id="claimForm" class="claim-form">
+            <div class="form-field">
+              <label class="form-label" for="c-text">Claim</label>
+              <textarea id="c-text" class="form-textarea" placeholder="e.g. 'The Great Wall of China is visible from the Moon with the naked eye.'" required></textarea>
+              <p class="form-hint">State it as a single, checkable factual claim — not an opinion.</p>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="c-sources">Supporting sources <span style="text-transform:none;color:var(--muted);font-weight:400;">(optional)</span></label>
+              <textarea id="c-sources" class="form-textarea" placeholder="One URL per line or comma-separated. Validators will fetch and read these directly."></textarea>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="c-stake">Stake amount (GEN)</label>
+              <input id="c-stake" class="form-input" type="number" min="0.01" step="0.01" placeholder="1.0" required />
+              <p class="form-hint">Sent on-chain when you fund the claim after deployment — this is the amount you risk.</p>
+            </div>
+
+            <button id="submitBtn" type="submit" class="btn btn--wallet btn--block">Deploy Claim Contract</button>
+          </form>
+          <p id="statusMsg" class="form-hint" style="margin-top:16px;"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__row">
+      <p>© 2026 TruthStake. Built on GenLayer.</p>
+      <p>Each claim is its own Intelligent Contract, registered on the TruthStake Registry.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
