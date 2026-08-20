@@ -229,7 +229,20 @@ function wireClaimActionsOnce(address) {
 
 function wireClaimActions(address) {
   const status = document.getElementById('statusMsg');
+  const actionButtonIds = ['btnFund', 'btnBack', 'btnVerify', 'btnChallenge', 'btnPayout'];
+  let isBusy = false;
+
+  const setButtonsDisabled = (disabled) => {
+    actionButtonIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = disabled;
+    });
+  };
+
   const run = async (fn) => {
+    if (isBusy) return; // ignore extra taps while a transaction is already in flight
+    isBusy = true;
+    setButtonsDisabled(true);
     try {
       await core.ensureConnected();
       status.textContent = 'Submitting transaction… waiting for validator consensus, this can take a while for AI verification.';
@@ -238,6 +251,9 @@ function wireClaimActions(address) {
       await loadClaimDetails(address);
     } catch (e) {
       status.textContent = e.message || String(e);
+    } finally {
+      isBusy = false;
+      setButtonsDisabled(false);
     }
   };
 
