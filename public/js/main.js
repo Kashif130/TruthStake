@@ -28,16 +28,20 @@ function stampClass(status) {
 // FEED PAGE
 // ---------------------------------------------------------------------
 let activeFilter = 'all';
+let _feedWired = false;
 
 async function initFeedPage() {
   if (!core.isConnected()) return;
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach((t) => t.addEventListener('click', () => {
-    tabs.forEach((x) => x.classList.remove('is-active'));
-    t.classList.add('is-active');
-    activeFilter = t.dataset.status;
-    loadFeed();
-  }));
+  if (!_feedWired) {
+    _feedWired = true;
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => x.classList.remove('is-active'));
+      t.classList.add('is-active');
+      activeFilter = t.dataset.status;
+      loadFeed();
+    }));
+  }
   await loadFeed();
 }
 
@@ -93,7 +97,8 @@ function updateStats(claims) {
 function initSubmitPage() {
   if (!core.isConnected()) return;
   const form = document.getElementById('claimForm');
-  if (!form) return;
+  if (!form || form.dataset.wired === 'true') return;
+  form.dataset.wired = 'true';
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
     const status = document.getElementById('statusMsg');
@@ -142,7 +147,7 @@ async function initClaimPage() {
     return;
   }
 
-  wireClaimActions(address);
+  wireClaimActionsOnce(address);
   if (!core.isConnected()) return;
   await loadClaimDetails(address);
 }
@@ -185,6 +190,43 @@ function renderClaimDetails(d) {
   document.getElementById('btnPayout').style.display = resolved ? 'inline-block' : 'none';
 }
 
+function promptAmount(label) {
+  return new Promise((resolve) => {
+    const modal = document.getElementById('amountModal');
+    const labelEl = document.getElementById('amountLabel');
+    const input = document.getElementById('amountInput');
+    const confirmBtn = document.getElementById('amountConfirmBtn');
+    const cancelBtn = document.getElementById('amountCancelBtn');
+
+    labelEl.textContent = label;
+    input.value = '';
+    modal.style.display = 'flex';
+    setTimeout(() => input.focus(), 50);
+
+    const cleanup = (value) => {
+      modal.style.display = 'none';
+      confirmBtn.removeEventListener('click', onConfirm);
+      cancelBtn.removeEventListener('click', onCancel);
+      input.removeEventListener('keydown', onKeydown);
+      resolve(value);
+    };
+    const onConfirm = () => cleanup(input.value.trim() || null);
+    const onCancel = () => cleanup(null);
+    const onKeydown = (ev) => { if (ev.key === 'Enter') onConfirm(); if (ev.key === 'Escape') onCancel(); };
+
+    confirmBtn.addEventListener('click', onConfirm);
+    cancelBtn.addEventListener('click', onCancel);
+    input.addEventListener('keydown', onKeydown);
+  });
+}
+
+let _wiredClaimAddress = null;
+function wireClaimActionsOnce(address) {
+  if (_wiredClaimAddress === address) return; // already wired for this claim, avoid duplicate listeners
+  _wiredClaimAddress = address;
+  wireClaimActions(address);
+}
+
 function wireClaimActions(address) {
   const status = document.getElementById('statusMsg');
   const run = async (fn) => {
@@ -200,13 +242,13 @@ function wireClaimActions(address) {
   };
 
   document.getElementById('btnFund').addEventListener('click', () => run(async () => {
-    const amount = prompt('Stake amount in GEN:');
+    const amount = await promptAmount('Stake amount in GEN');
     if (!amount) throw new Error('Cancelled');
     await core.writeClaim(address, 'fund_stake', [], core.toGenWei(amount));
   }));
 
   document.getElementById('btnBack').addEventListener('click', () => run(async () => {
-    const amount = prompt('Backing amount in GEN:');
+    const amount = await promptAmount('Backing amount in GEN');
     if (!amount) throw new Error('Cancelled');
     await core.writeClaim(address, 'back_claim', [], core.toGenWei(amount));
   }));
@@ -216,7 +258,7 @@ function wireClaimActions(address) {
   }));
 
   document.getElementById('btnChallenge').addEventListener('click', () => run(async () => {
-    const amount = prompt('Challenge stake in GEN (must be ≥ original stake):');
+    const amount = await promptAmount('Challenge stake in GEN (must be ≥ original stake)');
     if (!amount) throw new Error('Cancelled');
     await core.writeClaim(address, 'challenge_verdict', [], core.toGenWei(amount));
   }));
