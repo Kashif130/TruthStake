@@ -42,20 +42,41 @@ function updateAccount(account) {
   }
 }
 
+function waitForEthereumProvider(timeoutMs = 3000) {
+  return new Promise((resolve) => {
+    if (window.ethereum) return resolve(window.ethereum);
+    const start = Date.now();
+    const interval = setInterval(() => {
+      if (window.ethereum) {
+        clearInterval(interval);
+        resolve(window.ethereum);
+      } else if (Date.now() - start > timeoutMs) {
+        clearInterval(interval);
+        resolve(null);
+      }
+    }, 100);
+    window.addEventListener('ethereum#initialized', () => {
+      clearInterval(interval);
+      resolve(window.ethereum);
+    }, { once: true });
+  });
+}
+
 async function connectWalletAndEnsureNetwork() {
   const net = await (await fetch('/api/config/network_bradbury')).json();
-  if (!window.ethereum) throw new Error('No wallet extension found (install SubWallet or Talisman / a browser wallet)');
+  const provider = await waitForEthereumProvider();
+  if (!provider) throw new Error('No wallet extension found. Open this site from inside your wallet app’s built-in browser (MetaMask/SubWallet/Talisman), or install a browser wallet extension.');
   try {
-    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: net.chainIdHex }] });
+    await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: net.chainIdHex }] });
   } catch (e) {
     if (e.code === 4902 || (e.data && e.data.originalError && e.data.originalError.code === 4902)) {
-      await window.ethereum.request({
+      await provider.request({
         method: 'wallet_addEthereumChain',
         params: [{ chainId: net.chainIdHex, chainName: net.chainName, rpcUrls: net.rpcUrls, nativeCurrency: net.nativeCurrency, blockExplorerUrls: net.blockExplorerUrls }]
       });
     } else { throw e; }
   }
-  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  const accounts = await provider.request({ method: 'eth_requestAccounts' });
   return accounts[0];
 }
 
