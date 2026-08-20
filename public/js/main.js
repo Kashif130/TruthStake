@@ -152,14 +152,21 @@ async function initClaimPage() {
   await loadClaimDetails(address);
 }
 
-async function loadClaimDetails(address) {
+async function loadClaimDetails(address, retriesLeft = 3) {
   const status = document.getElementById('statusMsg');
   try {
     const raw = await core.readClaim(address, 'get_claim_details', []);
     const d = JSON.parse(raw);
     renderClaimDetails(d);
+    return true;
   } catch (e) {
+    if (retriesLeft > 0) {
+      // The RPC may need a moment to reflect state right after a write; retry a few times before giving up.
+      await new Promise((r) => setTimeout(r, 3000));
+      return loadClaimDetails(address, retriesLeft - 1);
+    }
     status.textContent = 'Could not read case file: ' + (e.message || String(e));
+    return false;
   }
 }
 
@@ -250,7 +257,14 @@ function wireClaimActions(address) {
       status.textContent = 'Done.';
       await loadClaimDetails(address);
     } catch (e) {
-      status.textContent = e.message || String(e);
+      // The write may still have gone through on-chain even though the browser tab
+      // lost track of it (common on mobile when switching to a wallet app). Re-check
+      // the actual chain state before showing a hard error.
+      status.textContent = 'Confirming on-chain state…';
+      const loaded = await loadClaimDetails(address);
+      if (!loaded) {
+        status.textContent = 'If your transaction actually succeeded, refresh the page to check. Otherwise: ' + (e.message || String(e));
+      }
     } finally {
       isBusy = false;
       setButtonsDisabled(false);
