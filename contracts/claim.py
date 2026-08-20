@@ -1,6 +1,7 @@
 # { "Depends": "py-genlayer:1jb45aa8ynh2a9c9xn3b7qqh8sm5q93hwfp7jqmwsfhh8jpz09h6" }
 from genlayer import *
 import json
+import time
 
 VALID_VERDICTS = ("true", "false", "misleading", "unverifiable")
 MAX_CHALLENGES = 2
@@ -191,7 +192,12 @@ class Claim(gl.Contract):
                     evidence_parts.append(f"SOURCE ({url}): could not be retrieved")
             evidence = "\n\n".join(evidence_parts) if evidence_parts else "No sources were provided by the submitter."
 
+            today_str = time.strftime("%Y-%m-%d", time.gmtime())
+
             prompt = f"""You are an impartial fact-checking validator on a decentralized truth-verification network. Multiple independent validators will review this same claim and must reach consensus.
+
+TODAY'S REAL-WORLD DATE: {today_str}
+Your own training data has a knowledge cutoff earlier than today. Dates at or before today's date above are NOT "in the future" — do not penalize a source or claim for referencing a recent or current date. Only treat a date as suspicious if it is genuinely after {today_str}.
 
 CLAIM TO VERIFY:
 "{claim_text}"
